@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="utf-8" />
+<meta title="Find & Replace Sequencer" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="theme-dark">
+
+<div id="export-modal" class="config-modal hidden">
+	<div class="config-modal__content">
+		<div class="modal-close-button-container">
+			<button class="modal-close-button">&times;</button>
+		</div>
+		<label for="export-modal__textarea">Copy and save to a text or JSON file.</label>
+		<textarea id="export-modal__textarea"></textarea>
+	</div>
+</div>
+
+<div id="import-modal" class="config-modal hidden">
+	<div class="config-modal__content">
+		<div class="modal-close-button-container">
+			<button class="modal-close-button">&times;</button>
+		</div>
+		<label for="import-modal__textarea">Paste an existing JSON configuration here.</label>
+		<textarea id="import-modal__textarea"></textarea>
+		<button id="import-modal__import-button" disabled>Import</button>
+	</div>
+</div>
+
+<section id="heading-area">
+	<div id="heading-area-left-div" class="heading-area-side-div"></div>
+	<h1 id="page-heading">
+		<span id="page-heading-text">Find &amp; Replace Sequencer</span>
+		<img id="page-heading-locked-icon" src="art/lock.svg" alt="Heading locked; select to unlock" />
+		<img id="page-heading-unlocked-icon" class="hidden" src="art/lock-open.svg" alt="Heading unlocked; select to lock" />
+	</h1>
+	<div id="heading-area-right-div" class="heading-area-side-div">
+		<div class="element-wrapper">
+			<div id="theme-select-left-img-wrapper" class="theme-select-img-wrapper">
+				<img class="theme-select-img" src="art/moon.svg" />
+			</div>
+			<label id="theme-select-toggle" class="find-replace-item__toggle">
+				<input class="find-replace-item__toggle-checkbox" type="checkbox" />
+				<span class="find-replace-item__toggle-slider"></span>
+			</label>
+			<div id="theme-select-right-img-wrapper" class="theme-select-img-wrapper">
+				<img class="theme-select-img" src="art/sun.svg" />
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="text-entry">
+	<div class="text-area-container">
+		<label for="original-text">Original text</label>
+		<textarea id="original-text" spellcheck="false"></textarea>
+	</div>
+	<div class="action-button-container">
+		<div id="run-button-container">
+			<button id="run-button" disabled>Run</button>
+		</div>
+		<!-- <div id="checkbox-container">
+			<input id="copy-on-run-checkbox" type="checkbox" checked />
+		</div>
+		<label for="copy-on-run-checkbox">Copy on Run</label> -->
+	</div>
+	<div class="text-area-container">
+		<label for="replacement-text">Replacement text</label>
+		<textarea id="replacement-text" spellcheck="false"></textarea>
+	</div>
+</section>
+
+<section id="find-replace">
+	<div id="find-replace__button-container">
+		<div id="find-replace__left-buttons">
+			<!-- <button id="find-replace__new">+</button> -->
+			<label for="find-replace__item-count">Count:</label>
+			<input id="find-replace__item-count" type="number" min="0" />
+		</div>
+		<div id="find-replace__right-buttons">
+			<button id="find-replace__export-button">Export</button>
+			<button id="find-replace__import-button">Import</button>
+		</div>
+	</div>
+	<div id="find-replace__item-container"></div>
+</section>
+
+<footer>
+	made by me
+</footer>
+
+<script src="js/enums.js"></script>
+<script src="js/util.js"></script>
+<script src="js/item-selector.js"></script>
+<script src="js/find-replace-item.js"></script>
+<script src="js/find-replace-gap.js"></script>
+<script src="js/find-replace-list.js"></script>
+<!-- <script src="js/import-export.js"></script> -->
+<script src="js/dom-builders.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
