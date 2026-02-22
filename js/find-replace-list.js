@@ -17,7 +17,14 @@ const FindReplaceList = (function() {
 		}
 	});
 
-	let importModal, exportModal;
+	const importModal = document.getElementById("import-modal");
+	const exportModal = document.getElementById("export-modal");
+
+	const importModalImportButton = document.getElementById("import-modal__import-button");
+	importModalImportButton.addEventListener("click", importTextFromModal);
+
+	const importModalTextArea = document.getElementById("import-modal__textarea");
+	importModalTextArea.addEventListener("input", () => disableButtonIfEmpty(importModalImportButton, importModalTextArea));
 
 	const importButton = document.getElementById("find-replace__import-button");
 	importButton.addEventListener("click", () => importModal?.classList.remove("hidden"));
@@ -32,15 +39,20 @@ const FindReplaceList = (function() {
 	//#endregion Data
 
 	function importTextFromModal(shouldSave = true) {
-		importFromText(importModal?.querySelector("textarea")?.value, shouldSave);
+		importFromText(importModalTextArea?.value, shouldSave);
 	}
 
 	function importFromText(text, shouldSave = true) {
 		try {
 			importFromJson(JSON.parse(text), shouldSave);
 		}
-		catch {
-			alert("Import text must be valid JSON.");
+		catch(e) {
+			if(e instanceof SyntaxError) {
+				alert("Import text must be valid JSON.");
+			}
+			else {
+				throw e;
+			}
 		}
 	}
 
@@ -97,11 +109,25 @@ const FindReplaceList = (function() {
 	}
 
 	function insertAt(item, idx) {
-		// if(Number.isNaN(idx)) {
-		// 	throw new RangeError(`Index value '${idx}' provided to 'insertAt' is not a number.`);
-		// }
+		if(Number.isNaN(idx)) {
+			throw new RangeError(`Index value '${idx}' provided to 'insertAt' is not a number.`);
+		}
 
-		// idx = Math.max(0, Math.min(idx, items.length));
+		idx = Math.max(0, Math.min(idx, items.length));
+
+		const newItem = makeNewItem(item);
+		const newGap = makeNewGap();
+
+		items.splice(idx, 0, newItem);
+		gaps.splice(idx, 0, newGap);
+
+		const childIndex = idx * 2 + 1;
+		newGap.insertBefore(root, root.children[childIndex]);
+		newItem.insertBefore(root, root.children[childIndex]);
+
+		isSettingCounterValue = true;
+		counter.value = items.length;
+		isSettingCounterValue = false;
 	}
 
 	function append(item) {
@@ -148,26 +174,14 @@ const FindReplaceList = (function() {
 
 	function insertAtGap(gapElem) {
 		let itemAndGapIdx = 0;
-		let itemData = items[0]?.data ?? null;
-		
+		let itemData = items[0]?.data;
+	
 		if(items.length > 0 && gapElem !== initialGap) {
 			itemAndGapIdx = Math.min(gaps.indexOf(gapElem), items.length - 1);
 			itemData = items[itemAndGapIdx].data;
 		}
 
-		const newItem = makeNewItem(itemData);
-		const newGap = makeNewGap();
-
-		items.splice(itemAndGapIdx, 0, newItem);
-		gaps.splice(itemAndGapIdx, 0, newGap);
-
-		const childIndex = itemAndGapIdx * 2 + 1;
-		newGap.insertBefore(root, root.children[childIndex]);
-		newItem.insertBefore(root, root.children[childIndex]);
-
-		isSettingCounterValue = true;
-		counter.value = items.length;
-		isSettingCounterValue = false;
+		insertAt(itemData, itemAndGapIdx);
 	}
 
 	function moveItem(oldIdx, newIdx) {

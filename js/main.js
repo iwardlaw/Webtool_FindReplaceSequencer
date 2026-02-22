@@ -126,14 +126,14 @@ for(const closeButton of document.querySelectorAll(".config-modal .modal-close-b
 // document.getElementById("find-replace__import-button").addEventListener("click", () => document.getElementById("import-modal").classList.remove("hidden"));
 // document.getElementById("import-modal__import-button").addEventListener("click", (evt) => importList(evt.target.parentElement.querySelector("textarea")?.value, evt.target.parentElement.parentElement));
 
-FindReplaceList.importModal = document.getElementById("import-modal");
-FindReplaceList.exportModal = document.getElementById("export-modal");
+// FindReplaceList.importModal = document.getElementById("import-modal");
+// FindReplaceList.exportModal = document.getElementById("export-modal");
 
-document.getElementById("import-modal__import-button").addEventListener("click", FindReplaceList.importFromTextFromModal);
+// document.getElementById("import-modal__import-button").addEventListener("click", FindReplaceList.importFromTextFromModal);
 
 //document.getElementById("find-replace__item-count").addEventListener("change", (evt) => setItemCount(evt.target.value));
 
-document.getElementById("import-modal__textarea").addEventListener("input", (evt) => disableButtonIfEmpty(document.getElementById("import-modal__import-button"), evt.target));
+// document.getElementById("import-modal__textarea").addEventListener("input", (evt) => disableButtonIfEmpty(document.getElementById("import-modal__import-button"), evt.target));
 document.getElementById("original-text").addEventListener("input", (evt) => disableButtonIfEmpty(document.getElementById("run-button"), evt.target));
 
 document.querySelector("#theme-select-toggle input").addEventListener("change", (evt) => setTheme(evt.target.checked, setThemeSlider = false));
