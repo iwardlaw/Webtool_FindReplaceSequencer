@@ -165,7 +165,7 @@ input {
 	margin: 50px auto;
 	padding: 20px;
 	border-radius: 20px;
-	background-color: #f8f8f8;
+	background-color: var(--page-bg-color);
 }
 
 .modal-close-button-container {
@@ -189,6 +189,8 @@ input {
 	height: calc(100% - 100px);
 	font-family: monospace;
 	resize: none;
+	background-color: var(--input-bg-color);
+	color: var(--input-fg-color);
 }
 
 #import-modal__import-button {
