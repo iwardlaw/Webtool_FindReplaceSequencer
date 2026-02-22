@@ -395,6 +395,7 @@ input {
 .find-replace-item__name-input {
 	padding: 0 0.5em;
 	background-color: var(--page-bg-color);
+	color: var(--soft-border-color);
 	border: 1px solid var(--soft-border-color);
 	border-radius: 1em;
 }
