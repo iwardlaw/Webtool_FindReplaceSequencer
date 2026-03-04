@@ -46,12 +46,12 @@ const FindReplaceList = (function() {
 		try {
 			importFromJson(JSON.parse(text), shouldSave);
 		}
-		catch(e) {
-			if(e instanceof SyntaxError) {
+		catch(err) {
+			if(err instanceof SyntaxError) {
 				alert("Import text must be valid JSON.");
 			}
 			else {
-				throw e;
+				throw err;
 			}
 		}
 	}
@@ -95,9 +95,9 @@ const FindReplaceList = (function() {
 				replaceString = substituteRegexReplacementEscapes(replaceString);
 			}
 
-			text = item.isRegex || item.matchCase ?
-				text.replaceAll(findPattern, replaceString) :
-				replaceAllCaseInsensitive(text, findPattern, replaceString);
+			text = item.isRegex || item.matchCase
+				? text.replaceAll(findPattern, replaceString)
+				: replaceAllCaseInsensitive(text, findPattern, replaceString);
 		}
 
 		return text;
@@ -106,6 +106,10 @@ const FindReplaceList = (function() {
 	function reset() {
 		clear();
 		insertAtGap(initialGap);
+	}
+
+	function append(item) {
+		insertAt(item, items.length);
 	}
 
 	function insertAt(item, idx) {
@@ -130,8 +134,16 @@ const FindReplaceList = (function() {
 		isSettingCounterValue = false;
 	}
 
-	function append(item) {
-		insertAt(item, items.length);
+	function insertAtGap(gapElem) {
+		let itemAndGapIdx = 0;
+		let itemData = items[0]?.data;
+	
+		if(items.length > 0 && gapElem !== initialGap) {
+			itemAndGapIdx = Math.min(gaps.indexOf(gapElem), items.length - 1);
+			itemData = items[itemAndGapIdx].data;
+		}
+
+		insertAt(itemData, itemAndGapIdx);
 	}
 
 	function remove(item) {
@@ -172,18 +184,6 @@ const FindReplaceList = (function() {
 		return FindReplaceGap.createNew(addButtonCallback = insertAtGap);
 	}
 
-	function insertAtGap(gapElem) {
-		let itemAndGapIdx = 0;
-		let itemData = items[0]?.data;
-	
-		if(items.length > 0 && gapElem !== initialGap) {
-			itemAndGapIdx = Math.min(gaps.indexOf(gapElem), items.length - 1);
-			itemData = items[itemAndGapIdx].data;
-		}
-
-		insertAt(itemData, itemAndGapIdx);
-	}
-
 	function moveItem(oldIdx, newIdx) {
 		if(items.length < 2) {
 			return;
@@ -216,15 +216,10 @@ const FindReplaceList = (function() {
 	}
 
 	function expandToLength(newLength) {
-		const newItemData = items.at(-1)?.data ?? null;
+		const newItemData = items.at(-1)?.data;
 		const fillStartIndex = items.length;
 
-		// items.length = newLength;
-		// gaps.length = newLength;
-		
 		for(let i = fillStartIndex; i < newLength; i++) {
-			// items[i] = makeNewItem(newItemData);
-			// gaps[i] = makeNewGap();
 			insertAtGap(gaps.at(-1));
 		}
 	}
@@ -257,8 +252,8 @@ const FindReplaceList = (function() {
 		set importModal(value) { importModal = value },
 		get exportModal() { return exportModal },
 		set exportModal(value) { exportModal = value },
-		insertAt: insertAt,
 		append: append,
+		insertAt: insertAt,
 		remove: remove,
 		removeAt: removeAt,
 		reset: reset,
