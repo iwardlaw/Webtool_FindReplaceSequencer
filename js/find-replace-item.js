@@ -144,7 +144,8 @@ const FindReplaceItem = (function() {
 		function createRoot() {
 			const rootDiv = document.createElement("div");
 			rootDiv.classList.add(CssClasses.Root);
-			rootDiv.addEventListener("click", (evt) => handleItemSelection(evt));
+			//@TODO: Reenable and finish implementing item selection.
+			// rootDiv.addEventListener("click", (evt) => handleItemSelection(evt));
 
 			return rootDiv;
 		}
