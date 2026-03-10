@@ -97,3 +97,8 @@ function shiftWithinArray(arr, startIdx, stopIdx, shouldRotate) {
 		arr[startIdx] = lastValue;
 	}
 }
+
+function browserIsDarkTheme() {
+	const browserDarkThemePreference = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+	return browserDarkThemePreference?.matches ?? false;
+}

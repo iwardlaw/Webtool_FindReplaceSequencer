@@ -36,6 +36,14 @@ function loadSequence() {
 	}
 }
 
+function initializeTheme() {
+	const colorTheme = localStorage.getItem(LocalStorageKeys.ColorTheme);
+	const isDarkTheme = colorTheme
+		? colorTheme === LocalStorageValues.ColorTheme.Dark
+		: browserIsDarkTheme();
+	setTheme(setToLight = !isDarkTheme, setThemeSlider = true);
+}
+
 function setTheme(setToLight, setThemeSlider) {
 	if(setToLight) {
 		document.body.classList.remove("theme-dark");
@@ -48,7 +56,7 @@ function setTheme(setToLight, setThemeSlider) {
 		document.querySelector("#theme-select-toggle input").checked = setToLight;
 	}
 
-	saveSequence();
+	localStorage.setItem(LocalStorageKeys.ColorTheme, setToLight ? LocalStorageValues.ColorTheme.Light : LocalStorageValues.ColorTheme.Dark);
 }
 
 if(new URLSearchParams(window.location.search).has("clear-storage")) {
@@ -90,5 +98,4 @@ document.getElementById("original-text").addEventListener("input", (evt) => disa
 
 document.querySelector("#theme-select-toggle input").addEventListener("change", (evt) => setTheme(evt.target.checked, setThemeSlider = false));
 
-let browserDarkThemePreference = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
-setTheme(setToLight = !browserDarkThemePreference.matches, setThemeSlider = true);
+initializeTheme();
